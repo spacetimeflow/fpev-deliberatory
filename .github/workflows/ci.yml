@@ -1,0 +1,22 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci
+      - run: npm run test:forms
+      - run: npm run test:feedback
+      - run: npm run test:render
+      - run: npm run test:integration
+      - run: npm run test:parse
+      - run: npm run test:gate
+      - run: npm run test:chat
+      - run: npm run test:exports
+      - run: npm run test:framing
+      - run: npm run test:fmview
+      - run: npm run test:trace
+      # the sandbox acceptance is added here once its runner-portability is proven

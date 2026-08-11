@@ -1,0 +1,12 @@
+# the package's tree: never commit the tool's own generated or workspace artifacts
+node_modules/
+workbench/
+conversations/
+meta/
+*.pid
+*.log
+.DS_Store
+tls/
+# workspace records that must never enter the repo (the two-session discipline)
+video-script-*.md
+**/.DS_Store

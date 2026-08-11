@@ -1,0 +1,36 @@
+{
+ "name": "fpev-deliberatory",
+ "version": "260810",
+ "description": "The FPEV deliberatory workbench \u2014 a folder of markdown that is a deliberation: stages, handoffs, gates, a derived cockpit, and a feedback engine that closes the loop between a human and their agent (verified, not trusted).",
+ "type": "module",
+ "private": true,
+ "scripts": {
+  "test:parse": "tsx src/state/tests.ts",
+  "test:render": "tsx src/render/render-tests.ts",
+  "test:forms": "tsx src/forms/tests.ts",
+  "test:gate": "tsx src/gate/tests.ts",
+  "audit:donors": "tsx src/state/donor-audit.ts",
+  "serve": "tsx bin/deliberatory",
+  "test:trace": "tsx src/trace/tests.ts",
+  "test:integration": "tsx src/server/integration-tests.ts",
+  "test:exports": "tsx src/render/export-tests.ts",
+  "test:chat": "tsx src/chat/tests.ts",
+  "test:framing": "tsx src/render/framing-tests.ts",
+  "test:feedback": "tsx src/feedback/tests.ts",
+  "test:fmview": "tsx src/render/frontmatter-view-tests.ts"
+ },
+ "dependencies": {
+  "marked": "^12.0.2",
+  "yaml": "^2.5.0"
+ },
+ "devDependencies": {
+  "@types/node": "^22.0.0",
+  "tsx": "^4.19.0",
+  "typescript": "^5.5.0"
+ },
+ "license": "CC-BY-4.0",
+ "repository": {
+  "type": "git",
+  "url": "https://github.com/wenlongjin/fpev-deliberatory"
+ }
+}
