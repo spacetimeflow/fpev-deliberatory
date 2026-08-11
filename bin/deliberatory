@@ -1,0 +1,107 @@
+#!/usr/bin/env node
+/**
+ * bin/deliberatory — the launcher (A5: a script, not an interface).
+ * Usage: node bin/deliberatory [project-dir] [--port N]
+ * Serve-on-demand: the process lives while the workbench is in use.
+ */
+
+import { execSync } from "node:child_process";
+import * as path from "node:path";
+import * as fs from "node:fs";
+import { createServer } from "../src/server/server.js";
+import { runLoop } from "../src/chat/harness-loop.js";
+import { exportAllSurfaces, exportWiki } from "../src/render/export.js";
+import { pendingBriefing } from "../src/feedback/inbox.js";
+import { runFeedbackEngine } from "../src/feedback/engine.js";
+import * as os from "node:os";
+
+const args = process.argv.slice(2);
+const portIdx = args.indexOf("--port");
+const port = portIdx >= 0 ? Number(args[portIdx + 1]) : Number(process.env.PORT ?? 7371);
+const host = process.env.HOST ?? "0.0.0.0"; // HOST=127.0.0.1 behind a TLS proxy
+
+// standalone (the gate #5): the conventions default to the package's embedded workflows/
+// when ~/.fpev is absent, so a fresh clone needs no external protocol.
+if (!process.env.FPEV_DIR) {
+  const homeFpev = path.join(os.homedir(), ".fpev");
+  process.env.FPEV_DIR = fs.existsSync(homeFpev) ? homeFpev : path.join(__dirname, "..", "workflows");
+}
+const projectDir = path.resolve(args[0] ?? process.cwd());
+
+/** Cross-cycle = sibling FPEV projects in the workspace (dirs with handoffs/). */
+function discoverProjects(projectDir) {
+  const parent = path.dirname(projectDir);
+  const out = [projectDir];
+  try {
+    for (const name of fs.readdirSync(parent)) {
+      if (name.startsWith(".")) continue;
+      const d = path.join(parent, name);
+      if (d === projectDir) continue;
+      if (fs.existsSync(path.join(d, "handoffs"))) out.push(d);
+    }
+  } catch {
+    /* parent unreadable — just the project */
+  }
+  return out;
+}
+
+const finalRoots = discoverProjects(projectDir);
+
+const server = createServer(projectDir, { roots: finalRoots });
+server.on("error", (e) => {
+  if (e && e.code === "EADDRINUSE") {
+    console.log(`workbench already running at http://localhost:${port} — opening it.`);
+    try {
+      execSync(`open "http://localhost:${port}"`);
+    } catch {
+      /* no browser */
+    }
+    process.exit(0);
+  }
+  throw e;
+});
+server.listen(port, host, () => {
+  const url = `http://localhost:${port}`;
+  if (host !== "0.0.0.0") console.log(`bound to ${host} (TLS proxy expected on this port's path)`);
+  console.log(`deliberatory workbench → ${url}`);
+  console.log(`project: ${projectDir}`);
+  console.log("serve-on-demand: Ctrl+C stops it; no state is owned (files are the database).");
+  // the automatic feedback reminder: pending items are printed at startup so any harness
+  // session started via the ritual is reminded without being told (capture → inbox → remind).
+  const briefing = pendingBriefing(projectDir);
+  if (briefing) console.log(briefing);
+  // ensure readable HTML surfaces exist so the cockpit's artifact links resolve
+  try {
+    const r = exportAllSurfaces(projectDir);
+    console.log(`surfaces: ${r.count} generated (${r.errors.length} errors)`);
+  } catch {
+    /* surfaces optional */
+  }
+  try {
+    exportWiki(projectDir);
+  } catch {
+    /* wiki optional */
+  }
+  try {
+    execSync(`open "${url}"`);
+  } catch {
+    /* no browser open (headless) — URL printed above */
+  }
+});
+
+// The A2 loop rides along with the workbench (serve-on-demand): watch conversations/
+// and auto-reply to unanswered user turns. Dry-run until HARNESS_CMD is set.
+const loopCmd = process.env.HARNESS_CMD ?? "";
+runLoop(projectDir, process.env.HARNESS_AGENT ?? "harness", loopCmd, Number(process.env.LOOP_INTERVAL_MS ?? 5000));
+
+// the automatic push: the cockpit inbox reaches the harness without a human step
+// (the game's engine pattern; not T3 — no platform integration). AGENT_BIN defaults to
+// pi, as the game's engine does; FEEDBACK_JOBS_ONLY=1 posts jobs only.
+runFeedbackEngine({
+  projectDir,
+  agentBin: process.env.AGENT_BIN !== undefined ? process.env.AGENT_BIN : "pi",
+  agentArgs: (process.env.AGENT_ARGS || "").split(" ").filter(Boolean),
+  jobsOnly: process.env.FEEDBACK_JOBS_ONLY === "1",
+  intervalMs: Number(process.env.FEEDBACK_INTERVAL_MS ?? 15000),
+  maxMs: Number(process.env.FEEDBACK_MAX_MS ?? 10 * 60 * 1000),
+});

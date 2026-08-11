@@ -1,0 +1,5 @@
+#!/bin/bash
+# run — start the deliberatory workbench for a project (standalone: the conventions are
+# embedded in this package's workflows/; ~/.fpev is used when present).
+PROJ="$(realpath "$1" 2>/dev/null || echo "$PWD/$1")"
+cd "$(dirname "$0")" && exec node_modules/.bin/tsx bin/deliberatory "$PROJ"
