@@ -6,7 +6,7 @@ deployment is the repository itself: clone → install → run. Nothing else is 
 ## Install (from this repository)
 
 ```bash
-git clone https://github.com/wenlongjin/fpev-deliberatory
+git clone https://github.com/spacetimeflow/fpev-deliberatory
 cd fpev-deliberatory
 npm ci
 ```
