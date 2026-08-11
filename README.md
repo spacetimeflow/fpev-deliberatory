@@ -1,6 +1,6 @@
 # fpev-deliberatory — the deliberatory, as a shape
 
-[![CI](https://github.com/wenlongjin/fpev-deliberatory/actions/workflows/ci.yml/badge.svg)](https://github.com/wenlongjin/fpev-deliberatory/actions)
+[![CI](https://github.com/spacetimeflow/fpev-deliberatory/actions/workflows/ci.yml/badge.svg)](https://github.com/spacetimeflow/fpev-deliberatory/actions)
 
 A folder of markdown that **is** a deliberation. The FPEV workbench: stages (Frame · Plan ·
 Execute · Verify), handoffs, gates, decisions, a derived cockpit, and a feedback engine that
