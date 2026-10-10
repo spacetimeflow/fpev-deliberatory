@@ -32,8 +32,7 @@ frontmatter: `stage`, `artifact`, `project`, `status`, `created-at`, `authors`.
 
 The protocol ships in this package's `workflows/` — the FPEV cadence, the handoff
 conventions, the stage rules, the divergence classes, the decision surfaces. A fresh agent
-reads these first (the ritual). `FPEV_DIR` defaults to them; your own `~/.fpev` is used when
-present.
+reads these first (the ritual). `FPEV_DIR` is this folder unless you set it.
 
 ## The architecture map
 

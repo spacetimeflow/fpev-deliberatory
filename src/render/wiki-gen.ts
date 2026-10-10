@@ -1,6 +1,6 @@
 /**
  * wiki-gen.ts — wiki/references HTML delivery (P7). Reads wiki/topics/*.md,
- * groups by optional `family:` frontmatter (per ~/.fpev/wiki-html-delivery.md),
+ * groups by optional `family:` frontmatter (per workflows/wiki-html-delivery.md),
  * renders one grouped index at workbench/wiki/index.html. Derived, regenerable.
  */
 
@@ -14,6 +14,8 @@ export interface WikiTopic {
   family: string;
   snippet: string;
   shared: boolean;
+  /** the /view path of this topic (set by collectWiki; the shared wiki may be flat ../wiki/ or ../wiki/topics/) */
+  rel?: string;
 }
 
 /** Collect wiki topics from the project's wiki AND the shared (cross-project) wiki. */
@@ -32,14 +34,16 @@ export function collectWiki(primaryDir: string, sharedDir?: string): WikiTopic[]
       const title = (typeof meta.title === "string" && meta.title) || f.replace(/\.md$/, "");
       const family = typeof meta.family === "string" ? meta.family : "ungrouped";
       const snippet = raw.replace(/^---[\s\S]*?---/, "").slice(0, 140).replace(/\s+/g, " ").trim();
-      out.push({ name: f, title, family, snippet, shared });
+      const rel = shared ? `../wiki/${path.basename(dir) === "topics" ? "topics/" : ""}${f}` : `wiki/topics/${f}`;
+      out.push({ name: f, title, family, snippet, shared, rel });
     }
   }
   return out;
 }
 
 /** The /view relative path for a topic (project wiki vs shared ../wiki). */
-export function wikiViewRel(t: { name: string; shared: boolean }): string {
+export function wikiViewRel(t: { name: string; shared: boolean; rel?: string }): string {
+  if (t.rel) return t.rel;
   return (t.shared ? "../wiki/topics/" : "wiki/topics/") + t.name;
 }
 

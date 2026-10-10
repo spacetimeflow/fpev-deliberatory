@@ -1,6 +1,6 @@
 {
  "name": "fpev-deliberatory",
- "version": "260810",
+ "version": "261010",
  "description": "The FPEV deliberatory workbench \u2014 a folder of markdown that is a deliberation: stages, handoffs, gates, a derived cockpit, and a feedback engine that closes the loop between a human and their agent (verified, not trusted).",
  "type": "module",
  "private": true,

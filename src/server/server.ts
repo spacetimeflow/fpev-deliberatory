@@ -7,6 +7,7 @@
 import * as http from "node:http";
 import * as path from "node:path";
 import * as fs from "node:fs";
+import * as os from "node:os";
 import { marked } from "marked";
 import { readProject } from "../state/reader.js";
 import { renderCockpit, type CrossCycleRow } from "../render/cockpit.js";
@@ -26,6 +27,9 @@ import { SseHub } from "./sse.js";
 import { watchProject } from "./watch.js";
 import { createThread, appendTurn, readThread, listThreads } from "../chat/thread.js";
 import { mdBody } from "../render/frontmatter-view.js";
+
+/** The person whose handle goes on what the cockpit writes (FPEV_PERSON; else the login name). */
+const PERSON = process.env.FPEV_PERSON || os.userInfo().username;
 
 /** Remote feedback (2026-08-09): FEEDBACK_TOKEN set → the feedback APIs require it.
  * Header X-Feedback-Token or ?token=. Unset → LAN trust unchanged (backward compatible). */
@@ -52,8 +56,23 @@ function escHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-const CODE_EXTS = new Set([".tex", ".py", ".ts", ".js", ".json", ".sh", ".yaml", ".yml", ".csv", ".txt"]);
+const CODE_EXTS = new Set([".tex", ".bib", ".py", ".ts", ".js", ".json", ".sh", ".yaml", ".yml", ".csv", ".txt", ".dat", ".log", ".out"]);
 const IMG_EXTS = new Set([".png", ".jpg", ".jpeg", ".svg", ".gif"]);
+
+/** Relative links inside a rendered .md resolve against the file's own folder, not /view
+ *  (fix 2026-09-25): href → /view?path=<dir>/<target>, src → /files/<dir>/<target>. */
+function rewriteRelativeLinks(html: string, rel: string): string {
+  const dir = path.posix.dirname(rel.split(path.sep).join("/"));
+  const isRelative = (u: string) => !/^(?:[a-z][a-z0-9+.-]*:|\/|#)/i.test(u);
+  const resolve = (u: string) => path.posix.normalize(path.posix.join(dir, u));
+  return html
+    .replace(/href="([^"]+)"/g, (m, u: string) => {
+      if (!isRelative(u)) return m;
+      const [target, hash] = u.split("#");
+      return `href="/view?path=${encodeURIComponent(resolve(decodeURIComponent(target)))}${hash ? "#" + hash : ""}"`;
+    })
+    .replace(/src="([^"]+)"/g, (m, u: string) => (isRelative(u) ? `src="/files/${encodeURIComponent(resolve(decodeURIComponent(u)))}"` : m));
+}
 
 /** Render a project file as a readable view — type-aware (md → HTML, pdf → embed, code → pre). */
 function serveFileView(projectDir: string, rel: string, res: http.ServerResponse, inline = false): void {
@@ -84,7 +103,7 @@ function serveFileView(projectDir: string, rel: string, res: http.ServerResponse
   let content: string;
   if (ext === ".md") {
     // the working renderer, with the YAML removed: the reader sees the body only
-    content = marked.parse(mdBody(fs.readFileSync(full, "utf8")));
+    content = rewriteRelativeLinks(marked.parse(mdBody(fs.readFileSync(full, "utf8"))) as string, rel);
   } else if (ext === ".pdf") {
     content = `<embed src="/files/${enc(rel)}" type="application/pdf" style="width:100%;height:640px;border:1px solid #23272f;border-radius:6px">`;
   } else if (CODE_EXTS.has(ext)) {
@@ -128,6 +147,18 @@ const MIME: Record<string, string> = {
   ".js": "application/javascript; charset=utf-8",
   ".pdf": "application/pdf",
   ".txt": "text/plain; charset=utf-8",
+  // source/data files display in the browser instead of downloading (2026-09-25)
+  ".tex": "text/plain; charset=utf-8",
+  ".bib": "text/plain; charset=utf-8",
+  ".py": "text/plain; charset=utf-8",
+  ".ts": "text/plain; charset=utf-8",
+  ".sh": "text/plain; charset=utf-8",
+  ".yaml": "text/plain; charset=utf-8",
+  ".yml": "text/plain; charset=utf-8",
+  ".csv": "text/plain; charset=utf-8",
+  ".dat": "text/plain; charset=utf-8",
+  ".log": "text/plain; charset=utf-8",
+  ".out": "text/plain; charset=utf-8",
   ".png": "image/png",
   ".jpg": "image/jpeg",
   ".svg": "image/svg+xml",
@@ -200,9 +231,13 @@ function json(res: http.ServerResponse, code: number, obj: unknown): void {
 
 function serveStatic(projectDir: string, rel: string, res: http.ServerResponse): void {
   const root = path.resolve(projectDir);
+  const parent = path.dirname(projectDir);
   const full = path.resolve(root, rel);
-  // traversal guard: the resolved path must stay inside the project root
-  if (full !== root && !full.startsWith(root + path.sep)) {
+  // traversal guard: the resolved path must stay inside the project root or one of the shared
+  // sibling folders that serveFileView already allows (../wiki, ../references, ../explorations).
+  // Without this, /view embeds /files/../references/x.pdf and the embed 403s (fix 2026-09-25).
+  const allowed = [root, path.resolve(parent, "wiki"), path.resolve(parent, "references"), path.resolve(parent, "explorations")];
+  if (!allowed.some((r) => full === r || full.startsWith(r + path.sep))) {
     res.statusCode = 403;
     res.end("forbidden");
     return;
@@ -303,7 +338,7 @@ export function createServer(
         .then((raw) => {
           const b = new URLSearchParams(raw);
           const r = appendTurn(projectDir, turnMatch[1], {
-            agent: b.get("agent") ?? "efran",
+            agent: b.get("agent") ?? PERSON,
             role: (b.get("role") as "user" | "assistant") ?? "user",
             text: b.get("text") ?? "",
           });
@@ -330,17 +365,17 @@ export function createServer(
     if (url === "/form/feedback") {
       const st = readProject(projectDir);
       res.setHeader("content-type", "text/html; charset=utf-8");
-      res.end(renderFeedbackForm(st, path.basename(projectDir), "efran"));
+      res.end(renderFeedbackForm(st, path.basename(projectDir), PERSON));
       return;
     }
     if (url === "/form/framing") {
       res.setHeader("content-type", "text/html; charset=utf-8");
-      res.end(renderFrameForm(path.basename(projectDir), "efran"));
+      res.end(renderFrameForm(path.basename(projectDir), PERSON));
       return;
     }
     if (url === "/form/verify") {
       res.setHeader("content-type", "text/html; charset=utf-8");
-      res.end(renderVerifyForm(path.basename(projectDir), "efran"));
+      res.end(renderVerifyForm(path.basename(projectDir), PERSON));
       return;
     }
     if (url === "/api/export" && req.method === "POST") {
@@ -393,7 +428,7 @@ export function createServer(
         .then((raw) => {
           const body = new URLSearchParams(raw);
           const target = body.get("target") ?? "unknown";
-          const author = body.get("author") ?? "efran";
+          const author = body.get("author") ?? PERSON;
           const stageM = target.match(/^stage-(\d+)/);
           const stage = stageM
             ? `${stageM[1]}-${({ 1: "frame", 2: "plan", 3: "execute", 4: "verify" } as Record<string, string>)[stageM[1]] ?? ""}`
@@ -435,7 +470,7 @@ export function createServer(
       readBody(req)
         .then((raw) => {
           const b = new URLSearchParams(raw);
-          const author = b.get("author") ?? "efran";
+          const author = b.get("author") ?? PERSON;
           const resWrite = writeFrameHandoff(projectDir, {
             project: b.get("project") ?? path.basename(projectDir),
             author,
@@ -460,14 +495,14 @@ export function createServer(
           const r = writeHarnessFeedback(projectDir, {
             project: path.basename(projectDir),
             stage: st.currentStage || "4-verify",
-            author: b.get("author") ?? "efran",
+            author: b.get("author") ?? PERSON,
             feedback: b.get("feedback") ?? "",
           });
           if (r.ok && r.path) {
             recordFeedback(projectDir, {
               kind: "harness",
               file: path.basename(r.path),
-              author: b.get("author") ?? "efran",
+              author: b.get("author") ?? PERSON,
               date: new Date().toISOString().slice(0, 10),
             });
             hub.broadcast({ type: "feedback:new", pending: listPending(projectDir).length });
@@ -503,7 +538,7 @@ export function createServer(
           const r = markAddressed(
             projectDir,
             b.get("id") ?? "",
-            b.get("addressedBy") ?? "efran",
+            b.get("addressedBy") ?? PERSON,
             new Date().toISOString().slice(0, 10),
             b.get("reply") || undefined
           );
@@ -516,7 +551,7 @@ export function createServer(
       readBody(req)
         .then((raw) => {
           const b = new URLSearchParams(raw);
-          const author = b.get("author") ?? "efran";
+          const author = b.get("author") ?? PERSON;
           const resWrite = writeVerifyHandoff(projectDir, path.basename(projectDir), author, [
             {
               id: b.get("id") ?? "P0",

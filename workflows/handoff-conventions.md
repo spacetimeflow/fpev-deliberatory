@@ -15,9 +15,9 @@ handoffs/stage-{stage-num}-{artifact-or-phase}-{author-id}.md
 | Correction docs (propagate-back) | `v{n}-{stage-name}-correction.md` (lives in next-version's `handoffs/`) |
 
 Examples (real):
-- `stage-1-frame-problem-OpusCC47.md`
+- `stage-1-frame-problem-wenlong-OpusCC47.md`
 - `stage-3-phase-4-Qwen3.6-27B-UD-IQ3_XXS.gguf.md`
-- `stage-4-phase-2-OpusCC47.md`
+- `stage-4-phase-2-wenlong-OpusCC47.md`
 - `v0-framing-correction.md`
 
 ## Frontmatter (every handoff)
@@ -52,7 +52,7 @@ The `authors:` field is **load-bearing**. Reviewer ≠ author is enforced by FAS
 | Human | first name, GitHub handle, or initials — `wenlong`, `efran`, `wj` |
 | Multi-author handoff | `[OpusCC47, wenlong]` — array |
 
-Pick a handle and use it consistently across cycles. If you switch models mid-cycle, update the `authors:` to reflect both, or split into separate handoffs.
+Pick one handle for the person and one for each agent, and keep them. In file names join them, person first: `wenlong-OpusCC47`. That joined handle is what `{author}` and `{author-id}` mean in every pattern. The person is whoever directs the agent; on a shared repository this keeps two people's files apart. If you switch models mid-cycle, update the `authors:` to reflect both, or split into separate handoffs.
 
 ## Section structure
 
@@ -64,12 +64,12 @@ Use these conventions for links to other artifacts:
 
 | Reference type | Convention |
 |---|---|
-| Another handoff in same project | `handoffs/stage-N-...-OpusCC47.md` (relative path) |
+| Another handoff in same project | `handoffs/stage-N-...-wenlong-OpusCC47.md` (relative path) |
 | Wiki topic | `wiki/topics/topic-name-{author}.md` |
 | Code review / reference | `references/...` |
 | External | absolute URL or `~/...` path |
-| FPEV workflow | `~/.fpev/{stage|conventions}/...` |
-| Protocol | `~/.fpev/fpev-cadence.md` |
+| FPEV workflow | `workflows/{stage|conventions}/...` |
+| Protocol | `workflows/fpev-cadence.md` |
 
 ## Sibling-of-three pattern (Frame stage)
 
@@ -87,7 +87,7 @@ When a handoff is substantially revised (not just typo fixes), the **previous ve
 
 ```
 stage-1-frame-problem-OpusCC47-v1.md  ← preserved pre-revision version
-stage-1-frame-problem-OpusCC47.md     ← current (post-revision)
+stage-1-frame-problem-wenlong-OpusCC47.md     ← current (post-revision)
 ```
 
 The current file's frontmatter records:
@@ -117,5 +117,5 @@ These break composability — don't do them:
 - **Anonymous handoffs.** Missing `authors:` is a hard constraint violation (C8).
 - **In-place revision without preserving prior version.** Loses the audit trail.
 - **Cross-cycle handoff in same directory without version prefix.** Use `v1-correction.md` or move to a separate `v1-PiFPEV/` directory.
-- **Diverging from the naming pattern.** Tooling (FASTRIC lint, surface generators, GitHub bridge) all parse the filename — drift breaks them silently.
+- **Diverging from the naming pattern.** Tooling (surface generators, the cockpit) parses the filename — drift breaks them silently.
 - **Inline non-canonical content.** If you produce JSON, HTML, or other derived formats, write them to separate files; the handoff stays markdown (C4).

@@ -216,6 +216,5 @@ constraints:
 
 ## See also
 
-- `~/.fpev/cadence.md` — protocol overview
 - `wiki/topics/fastric-fsm-{author}.md` — concept-level discussion in your project's wiki
 - Reference FASTRICs in `v1-PiFPEV/src/fastric/` (when v1 lands)

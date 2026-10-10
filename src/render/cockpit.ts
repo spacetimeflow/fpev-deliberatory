@@ -278,7 +278,7 @@ async function sendFeedback(){
   try{
     const r=await fetch("/api/forms/harness-feedback"+(FB_TOKEN?"?token="+FB_TOKEN:""),{method:"POST",
       headers:{"content-type":"application/x-www-form-urlencoded","X-Feedback-Token":FB_TOKEN},
-      body:new URLSearchParams({author:"efran",feedback:text})});
+      body:new URLSearchParams({feedback:text})});
     const d=await r.json();
     if(d.ok&&d.prompt){
       localStorage.removeItem("fb-draft");
@@ -389,7 +389,7 @@ async function loadReplies(){
   }catch(e){}
 }
 async function addressFeedback(id){
-  const r=await fetch("/api/feedback/address"+(FB_TOKEN?"?token="+FB_TOKEN:""),{method:"POST",headers:{"content-type":"application/x-www-form-urlencoded","X-Feedback-Token":FB_TOKEN},body:new URLSearchParams({id:id,addressedBy:"efran"})});
+  const r=await fetch("/api/feedback/address"+(FB_TOKEN?"?token="+FB_TOKEN:""),{method:"POST",headers:{"content-type":"application/x-www-form-urlencoded","X-Feedback-Token":FB_TOKEN},body:new URLSearchParams({id:id})});
   await loadFeedback();
 }
 if(document.getElementById("fb-body")){loadFeedback();setInterval(loadFeedback,15000);}

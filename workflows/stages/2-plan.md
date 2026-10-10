@@ -9,12 +9,7 @@ handoffs/
 └── stage-2-plan-{author}.md
 ```
 
-Plus a decision surface (cards format usually):
-
-```
-references/surfaces/
-└── stage-2-plan-cards.html
-```
+Generate a decision surface (HTML cards) only on request.
 
 Optional sibling for very large plans:
 
@@ -96,7 +91,7 @@ LoC budget: ~500 (R9 tripwire at 800)
 
 ### 5. Verification recipes per phase
 
-Each phase declares **how to verify** its deliverable. This is what Stage-4 Verify reads to check conformance.
+Each phase declares **how to verify** its deliverable. Execute's closing phase runs these; the human reads the results in Verify.
 
 | Phase | Verification |
 |-------|--------------|
@@ -173,7 +168,6 @@ If clarifying questions arise during Execute, that's a Plan deficiency — recor
 
 ## See also
 
-- `~/.fpev/cadence.md`
-- `~/.fpev/stages/1-frame.md` — what Plan reads
-- `~/.fpev/stages/3-execute.md` — what Plan enables
-- `~/.fpev/decision-surfaces.md` — generating Plan cards
+- `workflows/stages/1-frame.md` — what Plan reads
+- `workflows/stages/3-execute.md` — what Plan enables
+- `workflows/decision-surfaces.md` — generating Plan cards

@@ -100,7 +100,6 @@ Place actions where they're most natural per renderer (bottom bar in browser, co
 ## What the cockpit does NOT do
 
 - **Author content** — the cockpit reads state; agents and humans author artifacts in their own editors
-- **Run lint** — that's a separate workflow (`fastric-lint.md`, `dag-lint.md`); the cockpit reads results from `state.conformance`
 - **Execute long-running tasks** — those are the runtime/agent's job; the cockpit submits actions and observes
 - **Replace the state file** — the cockpit talks to the service; the service owns the file
 
@@ -126,8 +125,5 @@ A Slack-digest cockpit posts one rich message per cycle event, with reply-to-res
 
 ## See also
 
-- `~/.fpev/state-service-spec.md` — what the cockpit polls / subscribes to
-- `~/.fpev/decision-surfaces.md` — surfaces the cockpit links to
-- `~/.fpev/state-file-persistence.md` — schema the cockpit interprets
-- `~/.fpev/github-bridge.md` — channel state the cockpit displays
-- `wiki/topics/workflows-vs-daemon-OpusCC47.md` — when a cockpit is needed (Tier 3+) vs not (Tier 1)
+- `workflows/decision-surfaces.md` — surfaces the cockpit links to
+- `wiki/topics/workflows-vs-daemon-wenlong-OpusCC47.md` — when a cockpit is needed (Tier 3+) vs not (Tier 1)

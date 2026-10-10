@@ -71,7 +71,7 @@ $ npm run test:shim
 
 ## Divergences
 
-Any R-class divergence from Plan or Frame. Use the format in `~/.fpev/divergence-classes.md`.
+Any R-class divergence from Plan or Frame. Use the format in `workflows/divergence-classes.md`.
 
 If no divergences: "No divergences from Plan. Phase {N} matches its specification."
 
@@ -173,13 +173,23 @@ When you can:
 - Show the verification recipe output, in the handoff
 - Hand off to the next phase (or stage) without it needing to read your code to know what changed
 
+## The closing phase — mechanical verification
+
+Execute ends by verifying its own work. Stage 4 is the human's; do not leave checks for it.
+
+- **Components.** Run every verification recipe the Plan named. Record the command and its output.
+- **Integration.** Run the pieces together, end to end. Dogfood where the deliverable can host real work.
+- **Conformance to the Plan.** Give each deliverable a verdict: ✅ pass · ✅ pass-with-caveats · ✗ fail · ⏳ deferred.
+
+Classify each failure (R1 to R4) and fix it or record its disposition. The closing handoff carries the results, the divergences, the state of every gap, the decisions that are the human's (**For the human**), and what is weak.
+
 ## Exit criterion — when is the stage done?
 
-When all phases complete and the dogfood phase (last in Plan's DAG, usually) has run end-to-end. Stage 3 finishes; Stage 4 (Verify) starts.
+When all phases are complete and the closing phase has run every check. Stage 3 finishes; Stage 4 (Verify) starts on the human's word.
 
 ## See also
 
-- `~/.fpev/stages/2-plan.md` — Plan's structure (what Execute reads)
-- `~/.fpev/stages/4-verify.md` — what Execute's output enables
-- `~/.fpev/divergence-classes.md` — R-class taxonomy
-- `~/.fpev/gap-lifecycle.md` — updating gaps during Execute
+- `workflows/stages/2-plan.md` — Plan's structure (what Execute reads)
+- `workflows/stages/4-verify.md` — what Execute's output enables
+- `workflows/divergence-classes.md` — R-class taxonomy
+- `workflows/gap-lifecycle.md` — updating gaps during Execute

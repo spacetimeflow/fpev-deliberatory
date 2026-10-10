@@ -35,22 +35,32 @@ are project data and stay **git-versioned at the root**, like `handoffs/`. They 
 the `workbench/` tree (which is derived and gitignored); the workbench UI reads them, it does not
 own them.
 
-For **versioned projects** (where v1 builds on v0), the convention is sibling directories:
+## Two levels: the project and the versions of its sub-projects
+
+A **project** is a body of work: a research area, a product, a course. It holds **sub-projects**, and each **version** of a sub-project is one cycle through the four stages, in its own folder named `v{N}-{sub-project}`. The skeleton above is a version's.
 
 ```
 your-project/
-├── v0-yourproject/
-│   ├── handoffs/
-│   ├── references/
-│   ├── orchestrator-state.json
-│   └── src/
-├── v1-yourproject/
-│   └── handoffs/               ← starts with v0-correction docs as seeds
-├── wiki/                       ← shared across versions (cross-cycle knowledge)
-└── README.md                   ← layout explainer
+├── README.md                   ← what the project is; its sub-projects, their versions and status
+├── wiki/topics/                ← the project's wiki: what its sub-projects share
+├── references/                 ← the project's references: sources its sub-projects share
+├── explorations/               ← notes not yet a sub-project
+├── v1-first-subproject/
+│   ├── handoffs/               ← always the version's own
+│   ├── wiki/topics/            ← the version's wiki: terms only it uses
+│   ├── references/             ← the version's references: its prompts, research, reports
+│   └── README.md
+├── v2-first-subproject/        ← the next version of the same sub-project
+└── v1-second-subproject/       ← another sub-project of the same project
 ```
 
-The `wiki/` stays at the top level so concepts compound across versions; each `v{N}-…/` directory is otherwise self-contained.
+Three rules:
+
+1. **Handoffs belong to the version.** They never move up.
+2. **A wiki topic or a reference lives at the level of its readers.** If only this version reads it, keep it there. If another version or sub-project will, put it in the project.
+3. **Promote; do not copy or link.** When a second folder needs something the first holds, move it up and leave one line behind saying where it went.
+
+A version reads the project's wiki before it frames, and in Verify moves up what the next will need. A sub-project that stands alone needs no project folder above it.
 
 ## What goes where — decision rules
 
@@ -75,13 +85,12 @@ The `wiki/` stays at the top level so concepts compound across versions; each `v
 
 This is the most common confusion. The test:
 
-- **Will this content be read by future cycles of this project (or other projects following FPEV)?** → `wiki/topics/`
+- **Will this content be read by future cycles?** → `wiki/topics/`, in the project if other versions or sub-projects will read it
 - **Is this content specific to this cycle's verification, with no expected future readership?** → `references/`
 
 Examples:
 
 - "The R4 productive-divergence log" — `wiki/topics/recovery-vs-termination-{author}.md` (future cycles need this)
-- "Stage 4 verification HTML for v0-cycle-001" — `references/stage-4-verify-{author}.html` (cycle-specific artifact)
 - "Engine evaluation comparing Pi-FASTRIC vs LangGraph" — `references/engine-evaluation-{author}.md` (this-cycle decision, not future doctrine)
 - "What FASTRIC means and how it differs from FSM" — `wiki/topics/fastric-fsm-{author}.md` (conceptual, future-applicable)
 
@@ -94,7 +103,6 @@ A handoff is the **stage's commitment** — the artifact downstream stages read 
 - Stage-2 plan doc → `handoffs/stage-2-plan-{author}.md`
 - The Karpathy podcast notes that influenced the plan → `references/karpathy-ai-news-2026-05.md`
 - Stage-4 verification phase 1 → `handoffs/stage-4-phase-1-{author}.md`
-- The interactive HTML the verifier filled in → `references/stage-4-verify-{author}.html` (or sometimes co-located in `handoffs/` for tight coupling — convention varies)
 
 If the artifact is what Plan or Verify acts on, it's a handoff. If it's what Plan or Verify reads to inform itself, it's a reference.
 
@@ -111,7 +119,7 @@ If a project is documentation-only (no code), `src/` is absent. The skeleton sta
 
 ### `handoffs/`
 
-See `~/.fpev/handoff-conventions.md` for full detail. Summary:
+See `workflows/handoff-conventions.md` for full detail. Summary:
 
 ```
 stage-{N}-{artifact-or-phase}-{author}.md
@@ -123,7 +131,7 @@ stage-{N}-{artifact-or-phase}-{author}.md
 {topic-slug-in-kebab-case}-{author}.md
 ```
 
-Examples: `fastric-fsm-OpusCC47.md`, `recovery-vs-termination-OpusCC47.md`, `dual-channel-interface-OpusCC47.md`. The author suffix matters for C8 (every artifact has an author).
+Examples: `fastric-fsm-wenlong-OpusCC47.md`, `recovery-vs-termination-wenlong-OpusCC47.md`, `dual-channel-interface-wenlong-OpusCC47.md`. The author suffix matters for C8 (every artifact has an author).
 
 ### `references/`
 
@@ -191,7 +199,6 @@ A lint script (`fpev-lint-project.sh` someday) could check these mechanically.
 
 ## See also
 
-- `~/.fpev/handoff-conventions.md` — naming + frontmatter rules
-- `~/.fpev/cycle-initialization.md` — bootstrapping a new project
-- `~/.fpev/wiki-authoring.md` — writing a wiki topic
-- The author's dev records live under `~/.fpev/workflows/` (e.g. `fpev-cadence-dev/` — a worked example of this layout); the package's embedded `workflows/` ships the publishable subset — the conventions, without the dev-chat records.
+- `workflows/handoff-conventions.md` — naming + frontmatter rules
+- `workflows/cycle-initialization.md` — bootstrapping a new project
+- `workflows/wiki-authoring.md` — writing a wiki topic

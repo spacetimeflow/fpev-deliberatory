@@ -6,7 +6,7 @@
  * engine.js), applied to feedback: a background engine watches the feedback inbox and,
  * on fresh pending items, PUSHES them to the harness automatically — posts a job
  * (meta/jobs/feedback-{id}.md, any harness or human may take it) and spawns the
- * configured agent (AGENT_BIN, default pi; AGENT_ARGS) with the job prompt. The spawned
+ * configured agent (AGENT_BIN, the harness in use; AGENT_ARGS) with the job prompt. The spawned
  * harness reads the pending handoff, addresses it in the project, and marks the item
  * addressed; the reminder stops. One push per item (never spams); a failed spawn leaves
  * the job in meta/jobs/ for takeover.
@@ -20,7 +20,7 @@ import { conventionsRef } from "../state/conventions.js";
 
 export interface FeedbackEngineOpts {
   projectDir: string;
-  agentBin: string; // default "pi" (the game's engine default)
+  agentBin: string; // AGENT_BIN — the harness in use; no default
   agentArgs: string[]; // default []
   jobsOnly: boolean; // FEEDBACK_JOBS_ONLY=1 → jobs only, no spawn
   intervalMs: number; // default 15000

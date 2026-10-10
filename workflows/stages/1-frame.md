@@ -11,14 +11,9 @@ handoffs/
 └── stage-1-frame-gaps-{author}.md          ← knowledge unknowns
 ```
 
-Plus a decision surface per sibling (cards format usually):
+Name the deliverable in the problem statement: what the cycle delivers and where it lives, apart from the version's folder. Ask the human if unsure.
 
-```
-references/surfaces/
-├── stage-1-frame-problem-cards.html
-├── stage-1-frame-architecture-cards.html
-└── stage-1-frame-gaps-cards.html
-```
+Generate decision surfaces (HTML cards) only on request.
 
 ## Pace and posture
 
@@ -69,7 +64,7 @@ Required sections:
 5. **How gaps interact with constraints** — what closes-as-blocker
 6. **Uncertainty markers**
 
-See `~/.fpev/gap-lifecycle.md` for full gap structure.
+See `workflows/gap-lifecycle.md` for full gap structure.
 
 ## Frame principles to apply
 
@@ -77,7 +72,7 @@ Carry forward across cycles:
 
 - **Protocol simple, platform absorbs complexity** (don't bloat Frame with implementation detail; that's Plan's job)
 - **U-shape attention** (Frame is the slow side — afford it)
-- **Decision surfaces** (Frame produces surfaces for human review)
+- **Decision surfaces on request** (the handoffs are the review; cards are optional)
 - **Gaps are first-class** (don't bury them in prose; enumerate)
 - **Recovery, not termination** (R-class divergence is a tool, not a failure)
 - **Author-id discipline** (C8 — explicit in frontmatter)
@@ -87,12 +82,11 @@ Carry forward across cycles:
 
 If this is the project's **first cycle**:
 
-1. Read `~/.fpev/fpev-cadence.md` for protocol detail
+1. Read `workflows/fpev-cadence.md` for protocol detail
 2. Identify the audience and write the problem statement for them specifically
 3. Iterate the principles (P1, P2, …) until they cover what you'd defend in code review
 4. Iterate hard constraints (C1, C2, …) until they cover what would make you reject a PR
 5. Enumerate gaps as discrete questions with closure criteria
-6. Generate surfaces
 
 If this is an **iteration** (v1 of an existing project):
 
@@ -101,7 +95,6 @@ If this is an **iteration** (v1 of an existing project):
 3. Identify what changes (new principles emerging from Verify; new constraints; revised audience)
 4. Run propagate-back: did the prior version's Verify discover anything Frame should have known? Fold it in
 5. Add new gaps that emerged from the prior version's Verify
-6. Generate surfaces
 
 ## Sniff tests — is your Frame strong enough?
 
@@ -119,7 +112,7 @@ If any test fails, the Frame is underdeveloped. Either iterate, or be honest in 
 
 ## What Frame is NOT
 
-- **Not the Plan.** Don't enumerate phases, deliverables, or implementation steps. Frame says *what* and *why*; Plan says *when* and *how*.
+- **Not the Plan.** Name the deliverable; don't enumerate phases or implementation steps. Frame says *what* and *why*; Plan says *when* and *how*.
 - **Not the Verify.** Don't predict outcomes. Just articulate questions and unknowns.
 - **Not exhaustive.** Frame is a slice of reality; gaps acknowledge what's left out.
 - **Not immutable.** Propagate-back from Verify can update Frame. Preserve prior versions when revising.
@@ -145,8 +138,7 @@ If you can't, iterate. Frame is the cheap stage to iterate in — fixing Frame l
 
 ## See also
 
-- `~/.fpev/cadence.md` — protocol overview
-- `~/.fpev/handoff-conventions.md` — naming, frontmatter
-- `~/.fpev/gap-lifecycle.md` — gap structure
-- `~/.fpev/decision-surfaces.md` — generating cards for Frame review
-- `~/.fpev/stages/2-plan.md` — what Frame's output enables
+- `workflows/handoff-conventions.md` — naming, frontmatter
+- `workflows/gap-lifecycle.md` — gap structure
+- `workflows/decision-surfaces.md` — generating cards for Frame review
+- `workflows/stages/2-plan.md` — what Frame's output enables

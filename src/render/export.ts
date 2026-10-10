@@ -1,5 +1,5 @@
 /**
- * export.ts — P7 exports into workbench/ (project template per ~/.fpev:
+ * export.ts — P7 exports into workbench/ (project template per workflows/:
  * workbench/surfaces, workbench/wiki). Derived, regenerable, gitignore-able.
  */
 
@@ -36,7 +36,10 @@ export function exportAllSurfaces(projectDir: string): { ok: boolean; count: num
 
 export function sharedWikiTopicsDir(projectDir: string): string | undefined {
   const d = path.join(path.dirname(projectDir), "wiki", "topics");
-  return fs.existsSync(d) ? d : undefined;
+  if (fs.existsSync(d)) return d;
+  // fallback (2026-09-25): a flat shared wiki (../wiki/*.md with no topics/ subfolder)
+  const flat = path.join(path.dirname(projectDir), "wiki");
+  return fs.existsSync(flat) && fs.readdirSync(flat).some((f) => f.endsWith(".md")) ? flat : undefined;
 }
 
 export function exportWiki(projectDir: string): { ok: boolean; path?: string; error?: string } {

@@ -19,7 +19,7 @@ This file covers the first two. Branches and sub-problems don't need full initia
 PROJECT=my-project
 
 # 1. Create the skeleton
-mkdir -p $PROJECT/{handoffs,wiki/topics,references/walkthroughs,references/surfaces}
+mkdir -p $PROJECT/{handoffs,wiki/topics,references/walkthroughs}
 
 cd $PROJECT
 
@@ -34,31 +34,14 @@ An FPEV-cadenced project. See the fpev-deliberatory conventions for the protocol
 - `handoffs/`             — stage outputs (markdown)
 - `wiki/topics/`          — cross-cycle conceptual entries
 - `references/`           — reviews, walkthroughs, external readings
-- `references/surfaces/`  — generated decision surfaces (HTML)
+- `references/surfaces/`  — decision surfaces (HTML), made on request
 
 ## Status
 
 Stage 1 — Frame (just started).
 EOF
 
-# 3. Optional state file (only if you'll run a daemon later)
-cat > orchestrator-state.json <<EOF
-{
-  "cycleId": "cycle-001",
-  "stage": "frame",
-  "phase": "F0",
-  "alpha": 0.4,
-  "fsms": {},
-  "dag": {"F0": {"status": "in-progress", "deps": [], "startedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"}},
-  "gaps": {},
-  "artifacts": {},
-  "conformance": {},
-  "history": [{"timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)", "type": "cycle.init", "from": "(none)", "to": "cycle-001", "author": "$(whoami)"}],
-  "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-}
-EOF
-
-# 4. Git init (recommended — versioning is part of the protocol's audit trail)
+# 3. Git init (recommended — versioning is part of the protocol's audit trail)
 git init -q
 git add .
 git commit -m "init: FPEV cycle-001 skeleton" -q
@@ -72,7 +55,6 @@ What this produces:
 
 - An empty but well-structured project directory
 - README that orients newcomers
-- Optional `orchestrator-state.json` for later daemon use (delete if you'll never use one)
 - A git history starting at cycle-001 init
 
 ## Bootstrap — new version of existing project
@@ -96,7 +78,7 @@ cat > $DST_VERSION-yourproject/README.md <<EOF
 
 v${DST_VERSION#v} of the FPEV project. Seeded from v${SRC_VERSION#v} correction docs.
 
-See \`handoffs/\` for stage outputs; \`../wiki/\` is shared across versions.
+See \`handoffs/\` for stage outputs. The project's wiki and references are one level up; this version's own are here.
 EOF
 
 # 4. Top-level README explains layout
@@ -107,7 +89,7 @@ Two versions coexist:
 
 - \`$SRC_VERSION-yourproject/\` — shipped $SRC_VERSION
 - \`$DST_VERSION-yourproject/\` — fresh $DST_VERSION
-- \`wiki/\` — shared cross-cycle knowledge
+- \`wiki/\`, \`references/\` — the project's, shared by its sub-projects
 - \`.claude/\` — shared agent settings (if used)
 EOF
 
@@ -138,7 +120,7 @@ Don't pre-create:
 
 ## First-cycle Stage 1 Frame — what to expect
 
-The Frame stage produces three sibling handoffs (the triptych). See `~/.fpev/stages/1-frame.md` for the full guide. Briefly:
+The Frame stage produces three sibling handoffs (the triptych). See `workflows/stages/1-frame.md` for the full guide. Briefly:
 
 | File | What |
 |---|---|
@@ -146,7 +128,7 @@ The Frame stage produces three sibling handoffs (the triptych). See `~/.fpev/sta
 | `handoffs/stage-1-frame-architecture-{author}.md` | What we're building, file-layout sketch, dependencies |
 | `handoffs/stage-1-frame-gaps-{author}.md` | Knowledge unknowns, closure criteria, dependency DAG |
 
-Plus three companion decision surfaces in `references/surfaces/` (cards or slides).
+Generate decision surfaces in `references/surfaces/` only when the human asks.
 
 Stage 1 is **slow**. Expect 1–3 days of part-time work for a first cycle; longer for ambitious problems. Resist the urge to skip to Plan; cheap Frame fixes expensive Execute.
 
@@ -169,7 +151,6 @@ These don't need writing down yet — they go into Frame. But thinking them help
 
 ## See also
 
-- `~/.fpev/project-folder-structure.md` — full skeleton reference
-- `~/.fpev/handoff-conventions.md` — naming + frontmatter
-- `~/.fpev/stages/1-frame.md` — Frame stage detail
-- `~/.fpev/workflows/fpev-cadence-dev/jepa-fpev-demo/` — a worked example of a real cycle
+- `workflows/project-folder-structure.md` — full skeleton reference
+- `workflows/handoff-conventions.md` — naming + frontmatter
+- `workflows/stages/1-frame.md` — Frame stage detail
