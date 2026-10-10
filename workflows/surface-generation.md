@@ -144,7 +144,7 @@ The substitution is straightforward template engine logic — no need for a heav
 
 ```bash
 surface-gen \
-  --handoff handoffs/stage-1-frame-problem-OpusCC47.md \
+  --handoff handoffs/stage-1-frame-problem-wenlong-OpusCC47.md \
   --stage 1 \
   --format cards \
   --output references/surfaces/stage-1-problem-cards.html
@@ -183,7 +183,7 @@ If you want stricter extraction, parse a YAML block in the handoff that declares
 
 ## Wiki HTML delivery — adjacent but distinct
 
-See `~/.fpev/wiki-html-delivery.md` for generating browsable HTML from `wiki/topics/*.md` (cross-cycle knowledge, family-grouped). The patterns differ:
+See `workflows/wiki-html-delivery.md` for generating browsable HTML from `wiki/topics/*.md` (cross-cycle knowledge, family-grouped). The patterns differ:
 
 | Surfaces | Wiki HTML |
 |---|---|
@@ -205,7 +205,7 @@ A v1+ implementation might:
 
 ## See also
 
-- `~/.fpev/decision-surfaces.md` — what surfaces are, when to generate
-- `~/.fpev/handoff-conventions.md` — the structure of the source handoffs
-- `~/.fpev/wiki-html-delivery.md` — adjacent generator for cross-cycle knowledge
-- `~/.fpev/cockpit-design.md` — where surfaces are linked from
+- `workflows/decision-surfaces.md` — what surfaces are, when to generate
+- `workflows/handoff-conventions.md` — the structure of the source handoffs
+- `workflows/wiki-html-delivery.md` — adjacent generator for cross-cycle knowledge
+- `workflows/cockpit-design.md` — where surfaces are linked from

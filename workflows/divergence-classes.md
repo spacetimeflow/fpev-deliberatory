@@ -99,6 +99,5 @@ R4 should make the *next* cycle better. If the divergence wouldn't change how a 
 
 ## See also
 
-- `~/.fpev/cadence.md` — the protocol's invariants (#4 = divergence is recorded)
-- `~/.fpev/stages/4-verify.md` — Verify-stage handling of divergence and propagate-back
+- `workflows/stages/4-verify.md` — Verify-stage handling of divergence and propagate-back
 - The reference project's `wiki/topics/recovery-vs-termination-*.md` for worked examples

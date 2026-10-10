@@ -12,8 +12,7 @@ npm ci
 ```
 
 The package is standalone: the FPEV conventions are embedded in `workflows/` — a fresh
-clone needs no external protocol (`FPEV_DIR` defaults to the embedded copy; your own
-`~/.fpev` is used when present). No registry, no network at runtime; the cockpit is served
+clone needs no external protocol (`FPEV_DIR` is the embedded copy unless you set it). No registry, no network at runtime; the cockpit is served
 on demand from the folder.
 
 ## Run
@@ -38,12 +37,7 @@ copy.
 git pull && npm ci
 ```
 
-The code and the embedded `workflows/` snapshot travel together. The author keeps their own
-canonical `~/.fpev`; an author-side drift-lint (not shipped in this repository) compares
-the embedded copy against it before each publish — its domain is the published conventions
-(the top-level `workflows/`); the author's dev records under `~/.fpev/workflows/` are
-excluded, as they are not part of the published shape. For users, the embedded copy is
-canonical.
+The code and the conventions in `workflows/` travel together. The embedded copy is canonical.
 
 ## Remote feedback and the tailnet
 

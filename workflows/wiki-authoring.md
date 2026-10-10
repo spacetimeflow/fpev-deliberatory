@@ -6,6 +6,8 @@ How to write a `wiki/topics/{slug}-{author}.md` entry — and, more importantly,
 
 A wiki topic is a **durable, cross-cycle concept** — a piece of doctrine that future cycles (of this project or others) will refer to. It's not a journal entry, not a status update, not a one-time review.
 
+A topic that only this version uses stays in the version's wiki; one that other versions or sub-projects will read goes in the project's (`project-folder-structure.md`).
+
 The litmus test: **"Six months from now, when someone starts a new cycle on this project, will they want to read this?"**
 
 - Yes → wiki topic
@@ -36,10 +38,10 @@ wiki/topics/{kebab-case-slug}-{author-id}.md
 
 Examples:
 
-- `fastric-fsm-OpusCC47.md`
-- `recovery-vs-termination-OpusCC47.md`
-- `dual-channel-interface-OpusCC47.md`
-- `workflows-vs-daemon-OpusCC47.md`
+- `fastric-fsm-wenlong-OpusCC47.md`
+- `recovery-vs-termination-wenlong-OpusCC47.md`
+- `dual-channel-interface-wenlong-OpusCC47.md`
+- `workflows-vs-daemon-wenlong-OpusCC47.md`
 
 The slug is a short, stable noun phrase. **Don't** rename it later — anchors in other docs will break. If a topic outgrows its name, write a new one and leave the old one with a `superseded-by:` field.
 
@@ -120,7 +122,7 @@ The wiki's value compounds when topics link to each other. Use this convention:
 - **Internal link** to another wiki topic: `[concept-name](other-topic-{author}.md)` or just by name: `see \`recovery-vs-termination-{author}.md\``
 - **Link to a handoff**: `handoffs/stage-N-...-{author}.md`
 - **Link to a reference**: `references/...`
-- **Link to protocol**: `~/.fpev/fpev-cadence.md`
+- **Link to protocol**: `workflows/fpev-cadence.md`
 - **External link**: full URL
 
 Forward links (referencing topics that don't exist yet) are OK — they mark TODO topics. They become orphaned-link warnings only if they stay dangling after a few cycles.
@@ -149,7 +151,6 @@ If a `mature` topic exceeds 500 lines, consider splitting — usually one topic 
 
 ## Worked examples — what good wiki topics look like
 
-In `~/.fpev/workflows/fpev-cadence-dev/wiki/`:
 
 - `anti-collapse.md` — concept with both definition and how-it-shows-up
 - `taste-and-judgment.md` — concept with applied implications
@@ -158,9 +159,9 @@ In `~/.fpev/workflows/fpev-cadence-dev/wiki/`:
 
 In `~/cJWL25/Research25/PiFPEV/wiki/topics/`:
 
-- `recovery-vs-termination-OpusCC47.md` — concept-mechanism with worked entries log
-- `workflows-vs-daemon-OpusCC47.md` — architecture-comparison
-- `fpev-protocol-OpusCC47.md` — the protocol's own topic-level summary
+- `recovery-vs-termination-wenlong-OpusCC47.md` — concept-mechanism with worked entries log
+- `workflows-vs-daemon-wenlong-OpusCC47.md` — architecture-comparison
+- `fpev-protocol-wenlong-OpusCC47.md` — the protocol's own topic-level summary
 
 Read 2–3 before authoring your first topic.
 
@@ -191,7 +192,5 @@ Don't update the core sections (`What it is`, `Why it matters`) casually — the
 
 ## See also
 
-- `~/.fpev/project-folder-structure.md` — where the wiki lives in the skeleton
-- `~/.fpev/handoff-conventions.md` — handoffs cite wiki topics
-- `~/.fpev/cadence.md` — invariant #2 (knowledge compounds across cycles)
-- `~/.fpev/workflows/fpev-cadence-dev/wiki/wiki-philosophy.md` — meta-discussion of what the wiki is for
+- `workflows/project-folder-structure.md` — where the wiki lives in the skeleton
+- `workflows/handoff-conventions.md` — handoffs cite wiki topics

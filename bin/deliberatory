@@ -13,19 +13,16 @@ import { runLoop } from "../src/chat/harness-loop.js";
 import { exportAllSurfaces, exportWiki } from "../src/render/export.js";
 import { pendingBriefing } from "../src/feedback/inbox.js";
 import { runFeedbackEngine } from "../src/feedback/engine.js";
-import * as os from "node:os";
+import { fileURLToPath } from "node:url";
 
 const args = process.argv.slice(2);
 const portIdx = args.indexOf("--port");
 const port = portIdx >= 0 ? Number(args[portIdx + 1]) : Number(process.env.PORT ?? 7371);
 const host = process.env.HOST ?? "0.0.0.0"; // HOST=127.0.0.1 behind a TLS proxy
 
-// standalone (the gate #5): the conventions default to the package's embedded workflows/
-// when ~/.fpev is absent, so a fresh clone needs no external protocol.
-if (!process.env.FPEV_DIR) {
-  const homeFpev = path.join(os.homedir(), ".fpev");
-  process.env.FPEV_DIR = fs.existsSync(homeFpev) ? homeFpev : path.join(__dirname, "..", "workflows");
-}
+// the conventions are this package's own workflows/: a cycle run on this shape reads
+// them, whatever other copy the machine holds. FPEV_DIR overrides.
+if (!process.env.FPEV_DIR) process.env.FPEV_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "workflows");
 const projectDir = path.resolve(args[0] ?? process.cwd());
 
 /** Cross-cycle = sibling FPEV projects in the workspace (dirs with handoffs/). */
@@ -95,13 +92,13 @@ const loopCmd = process.env.HARNESS_CMD ?? "";
 runLoop(projectDir, process.env.HARNESS_AGENT ?? "harness", loopCmd, Number(process.env.LOOP_INTERVAL_MS ?? 5000));
 
 // the automatic push: the cockpit inbox reaches the harness without a human step
-// (the game's engine pattern; not T3 — no platform integration). AGENT_BIN defaults to
-// pi, as the game's engine does; FEEDBACK_JOBS_ONLY=1 posts jobs only.
+// (the game's engine pattern; not T3 — no platform integration). AGENT_BIN names the
+// agent (the harness in use); with none named, or FEEDBACK_JOBS_ONLY=1, it posts jobs only.
 runFeedbackEngine({
   projectDir,
-  agentBin: process.env.AGENT_BIN !== undefined ? process.env.AGENT_BIN : "pi",
+  agentBin: process.env.AGENT_BIN ?? "",
   agentArgs: (process.env.AGENT_ARGS || "").split(" ").filter(Boolean),
-  jobsOnly: process.env.FEEDBACK_JOBS_ONLY === "1",
+  jobsOnly: process.env.FEEDBACK_JOBS_ONLY === "1" || !process.env.AGENT_BIN,
   intervalMs: Number(process.env.FEEDBACK_INTERVAL_MS ?? 15000),
   maxMs: Number(process.env.FEEDBACK_MAX_MS ?? 10 * 60 * 1000),
 });

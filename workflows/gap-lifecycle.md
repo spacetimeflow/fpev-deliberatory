@@ -60,7 +60,7 @@ A gap closes when **evidence** lands. Evidence is concrete:
 - A diff comparing two implementations
 - A measurement (LoC count, memory profile, timing)
 - A reference to a canonical decision recorded elsewhere
-- An explicit human verdict at a decision surface
+- An explicit human verdict
 
 Evidence is **logged in the handoff that closes the gap**:
 
@@ -125,6 +125,5 @@ A healthy gaps file:
 
 ## See also
 
-- `~/.fpev/cadence.md` — invariant #2 (knowledge gaps are first-class)
-- `~/.fpev/stages/1-frame.md` — gap identification during Frame
-- `~/.fpev/stages/4-verify.md` — closure checking during Verify
+- `workflows/stages/1-frame.md` — gap identification during Frame
+- `workflows/stages/4-verify.md` — closure checking during Verify

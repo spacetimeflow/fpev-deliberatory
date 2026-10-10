@@ -1,7 +1,7 @@
 /**
  * surfaces.ts — decision-surface generation (P7). Absorbed gen.ts concepts,
  * re-specified: one handoff → self-contained cards HTML in workbench/surfaces/.
- * Pattern extraction per ~/.fpev/surface-generation.md; link back to canonical.
+ * Pattern extraction per workflows/surface-generation.md; link back to canonical.
  */
 
 import type { ParsedHandoff } from "../state/types.js";

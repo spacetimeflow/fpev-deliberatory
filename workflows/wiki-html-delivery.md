@@ -197,7 +197,6 @@ A non-TypeScript implementation could use:
 
 ## See also
 
-- `~/.fpev/surface-generation.md` — adjacent generator for decision surfaces
-- `~/.fpev/wiki-authoring.md` — what wiki topics look like as authored
-- `~/.fpev/cockpit-design.md` — Wiki panel display
-- `~/.fpev/knowledge-dag.md` — meta-workflow building the link graph (this generator surfaces it)
+- `workflows/surface-generation.md` — adjacent generator for decision surfaces
+- `workflows/wiki-authoring.md` — what wiki topics look like as authored
+- `workflows/cockpit-design.md` — Wiki panel display

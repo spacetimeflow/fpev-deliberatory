@@ -3,7 +3,7 @@
  *
  * Runs the corpus through OUR parser and through a simulation of the v0-PiFPEV
  * donor extraction patterns (the regex families documented in
- * ~/.fpev/surface-generation.md). Records where the donor would have produced
+ * workflows/surface-generation.md). Records where the donor would have produced
  * sparse/empty surfaces vs. what our parser finds — the port-vs-re-spec
  * evidence (G16).
  */
@@ -13,7 +13,7 @@ import * as path from "node:path";
 import { splitFrontmatter } from "./frontmatter.js";
 import { extractGaps, listHandoffs } from "./reader.js";
 
-// v0 donor patterns (documented in ~/.fpev/surface-generation.md):
+// v0 donor patterns (documented in workflows/surface-generation.md):
 const V0_GAP_HEADING = /^###\s*([ERTLG]\d+)\s*[—\-–:]\s*(.+)$/gm;
 const V0_GAP_TABLE = /(?:^|\|)\s*([ERTLG]\d+)\s*[:\|]/gm;
 const V0_DECISION = /^###\s*(D\d+)\s*[—\-–:]\s*(.+)$/gm;

@@ -27,20 +27,10 @@ bundle of the tool and a scratch project and asserts, line by line: cockpit serv
 serves · the token gate (trusted networks need no token; strict mode gates strangers with a
 401) · the remote page · feedback POST · surfaces and wiki generate · the inbox ledger
 records · the reply gate (a silent agent keeps the item pending) · the pending API · the
-address API · pending clears after · the drift-lint. It is not shipped here — like the
-drift-lint, it is author-side.
+address API · pending clears after. It is not shipped here; it is author-side.
 
 A user's copy is proven when the suites above pass and `./run <project>` serves the
 cockpit: open `http://localhost:7371/` and see the project rendered.
-
-## The drift-lint (author-side)
-
-`bin/fpev-drift-lint.sh` compares the embedded `workflows/` against the author's canonical
-`~/.fpev` (with `FPEV_DIR`). Its domain is the **publishable conventions** — `~/.fpev`'s
-top-level files; the author's private dev records under `~/.fpev/workflows/` (and `.DS_Store`
-noise) are excluded, since they are deliberately not shipped (the two-session discipline).
-For users, the embedded copy *is* canonical; the lint is the author's pre-publish check that
-the published conventions match the canonical protocol.
 
 ## How to verify a claim in this manual
 

@@ -1,5 +1,22 @@
 # Changelog
 
+## 261010 — v2: a leaner shape, from practice
+
+What changed from 260810, and why. Each item rests on use of v1 in more than a hundred cycles or on a stated principle; the development record holds the evidence.
+
+- **Six rules open the first-read file.** The human opens each stage in words. Every handoff names its person and its agent. The human's words stay theirs, and their prompts are recorded. Frame names the deliverable. Execute runs every mechanical check; Verify is the human's. The record grows. Everything else is advice.
+- **The command line is the default.** HTML surfaces and the cockpit come on request and stay in the package.
+- **Verify is the human's stage.** A phase starts from something the human says. Mechanical verification moved to a closing phase of Execute.
+- **Two levels of folders.** A project holds sub-projects; each version of a sub-project is one cycle, in `v{N}-{sub-project}/`. Wiki and references exist at both levels.
+- **Person and agent in every handoff name,** joined, person first.
+- **The conventions stand alone.** No file refers to a protocol folder elsewhere. Eight unused convention files left; the index lists two groups, core and on request.
+- **The cockpit names no agent.** Start it with the command of the harness in use (`AGENT_BIN`, `AGENT_ARGS`) and the person's handle (`FPEV_PERSON`). With no agent named it posts jobs and spawns nothing.
+- **Domain schemas ship** in `domains/`: OCR transcription; the first draft of a research article.
+- **Repairs.** The launcher starts on a machine without another copy of the conventions. The cockpit reads a shared wiki and references one level up. The code holds no person's name.
+- **The protocol document is unchanged.**
+
+Known and left for a later version: the conventions do not yet say how a stage is opened when the human is away; the form of the authors list in front matter is open; four on-request files and the two schemas' Stage 4 phases still describe v1.
+
 ## 260810 — the milestone era (the first shared release)
 
 The version the tool became stable enough to share. What it contains:

@@ -50,7 +50,7 @@ If a generator tool exists (e.g., `src/surfaces/gen.ts` in a PiFPEV deployment),
 
 ```bash
 node --experimental-strip-types src/surfaces/gen.ts \
-  --handoff handoffs/stage-1-frame-problem-OpusCC47.md \
+  --handoff handoffs/stage-1-frame-problem-wenlong-OpusCC47.md \
   --stage 1 \
   --format cards \
   --output references/surfaces/stage-1-frame-problem-cards.html
@@ -125,6 +125,5 @@ If you find yourself generating surfaces during Execute, your Execute is leaking
 
 ## See also
 
-- `~/.fpev/cadence.md` — invariant #3 (decision surfaces at human-judgment points)
 - `~/workflows25/interactive-explainer-guide.md` — full pattern (ML)
 - `~/workflows25/interactive-code-explainer-guide.md` — full pattern (software)
