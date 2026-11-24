@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+"""Check a version folder's record before a stage or phase opens: the prompt record, and one handoff per stage and phase.
+
+  fpev-record-check <version-folder>     report problems; exit 1 if the record has a gap
+  fpev-record-check --selftest           build planted faults and sound folders, and judge them
+
+It checks form only. It cannot tell whether a handoff is good, or whether every prompt was recorded.
+"""
+import os, re, sys, tempfile
+
+NAME = re.compile(r"^stage-([1-4])-(frame-(?:problem|architecture|gaps)|frame-gate|phase-(\d+)|plan(?:-gate)?|execute-complete|[a-z0-9-]+?)-(.+)\.md$")
+PROMPT = re.compile(r"^(?:#{2,4}\s+\S|\*\*#\d+\*\*|>\s+\S)", re.M)
+
+
+def check(folder):
+    errors, warnings = [], []
+    refs = os.path.join(folder, "references")
+    records = [f for f in os.listdir(refs) if f.startswith("user-prompts") and f.endswith(".md")] if os.path.isdir(refs) else []
+    if not records:
+        errors.append("no prompt record: references/user-prompts-<person>.md")
+    else:
+        text = "".join(open(os.path.join(refs, f), encoding="utf-8", errors="replace").read() for f in records)
+        if not PROMPT.search(text):
+            errors.append("the prompt record holds no prompts")
+    hd = os.path.join(folder, "handoffs")
+    files = sorted(f for f in os.listdir(hd) if f.endswith(".md")) if os.path.isdir(hd) else []
+    stages = {}
+    for f in files:
+        if re.search(r"-v\d+\.md$", f):
+            continue
+        m = NAME.match(f)
+        if not f.startswith("stage-"):
+            continue
+        if not m:
+            warnings.append(f"name does not follow the pattern: {f}")
+            continue
+        stage, kind, phase, author = int(m.group(1)), m.group(2), m.group(3), m.group(4)
+        if "-" not in author:
+            warnings.append(f"name lacks person-agent: {f}")
+        head = open(os.path.join(hd, f), encoding="utf-8", errors="replace").read(2000)
+        if not re.search(r"^authors:\s*\S", head, re.M):
+            warnings.append(f"front matter lacks authors: {f}")
+        stages.setdefault(stage, []).append((kind, int(phase) if phase else None))
+    if not stages:
+        return errors, warnings
+    top = max(stages)
+    if 1 in stages:
+        kinds = {k for k, _ in stages[1]}
+        if top > 1 and not {"frame-problem", "frame-architecture", "frame-gaps"} <= kinds:
+            errors.append("Frame lacks its triptych (problem, architecture, gaps)")
+    for s in range(1, top):
+        if s not in stages:
+            errors.append(f"stage {s} has no handoff, but stage {top} has begun")
+    if top > 2 and 2 in stages and not any(k.startswith("plan") for k, _ in stages[2]):
+        errors.append("Plan has no stage-2-plan handoff")
+    for s, items in stages.items():
+        nums = sorted({p for _, p in items if p is not None})
+        missing = [n for n in range(1, nums[-1] + 1) if n not in nums and not (n == 0)] if nums else []
+        if nums and nums[0] == 0:
+            missing = [n for n in range(0, nums[-1] + 1) if n not in nums]
+        for n in missing:
+            errors.append(f"stage {s} phase {n} has no handoff")
+    return errors, warnings
+
+
+def write(path, text):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    open(path, "w", encoding="utf-8").write(text)
+
+
+def fixture(root, name, prompts=True, triptych=True, plan=True, phases=(1, 2, 3)):
+    d = os.path.join(root, name)
+    fm = "---\nauthors: [alex, ExampleAgent]\n---\n# h\n"
+    if prompts:
+        write(os.path.join(d, "references", "user-prompts-alex.md"), "# Prompts\n\n**#1** (2026-01-01; opens Stage 1)\n> Frame this.\n")
+    write(os.path.join(d, "handoffs", "stage-1-phase-1-alex-ExampleAgent.md"), fm)
+    if triptych:
+        for k in ("problem", "architecture", "gaps"):
+            write(os.path.join(d, "handoffs", f"stage-1-frame-{k}-alex-ExampleAgent.md"), fm)
+    if plan:
+        write(os.path.join(d, "handoffs", "stage-2-plan-alex-ExampleAgent.md"), fm)
+    for p in phases:
+        write(os.path.join(d, "handoffs", f"stage-3-phase-{p}-alex-ExampleAgent.md"), fm)
+    return d
+
+
+def selftest():
+    with tempfile.TemporaryDirectory() as t:
+        cases = [("sound", fixture(t, "sound"), False),
+                 ("fault: no prompt record", fixture(t, "f1", prompts=False), True),
+                 ("fault: no triptych", fixture(t, "f2", triptych=False), True),
+                 ("fault: no plan", fixture(t, "f3", plan=False), True),
+                 ("fault: a phase skipped", fixture(t, "f4", phases=(1, 3)), True)]
+        bad = 0
+        for label, d, expect in cases:
+            got = bool(check(d)[0])
+            ok = got == expect
+            bad += not ok
+            print(("ok   " if ok else "WRONG"), label)
+        print(f"{len(cases) - bad} of {len(cases)} judged correctly")
+        return 1 if bad else 0
+
+
+def main():
+    if len(sys.argv) != 2:
+        sys.exit(__doc__)
+    if sys.argv[1] == "--selftest":
+        sys.exit(selftest())
+    errors, warnings = check(sys.argv[1])
+    for e in errors:
+        print("GAP ", e)
+    for w in warnings:
+        print("note", w)
+    print(f"{'GAP' if errors else 'OK'}: {len(errors)} gap(s), {len(warnings)} note(s)")
+    sys.exit(1 if errors else 0)
+
+
+if __name__ == "__main__":
+    main()

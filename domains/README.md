@@ -4,10 +4,12 @@ created-by: Opus5CC
 type: shape-file
 project: v1-fpev-deliberatory-deployment
 purpose: what a domain schema is, and how it complements the FPEV cadence
-status: draft (domains: ocr-transcription, research-article-first-draft)
+status: draft (domains: ocr-transcription, research-article-first-draft, local-model-installation, domain-development, teaching-assets-development, youtube-transcripts, article-review, evaluation-letters, student-research-advising, research-proposals, theory-model-development, exploration-pieces, web-adapter)
 ---
 
-# `domains/` — domain schemas that complement the cadence
+# `domains/` — domain shapes that complement the cadence
+
+A **domain shape** specializes FPEV for one recognizable kind of work. The three older files use the earlier name, *domain schema*. To make or improve a domain, start from `domain-development/domain-development.md`.
 
 The cadence in `workflows/` is deliberately **domain-free**: Frame → Plan → Execute → Verify,
 handoff conventions, gap lifecycle, divergence classes. That is what makes it apply to anything.
@@ -57,9 +59,44 @@ topics* · *Metrics to record* · *Reference implementation* · *What the cadenc
 
 | Schema | For | Reference implementation |
 |---|---|---|
-| `ocr-transcription.md` | transcribing a handwritten or scanned corpus faithfully, page by page, with a human author as the oracle | `a private 1994 manuscript corpus` (85 pages, 2026-09-21/22) |
+| `ocr-transcription.md` | transcribing a handwritten or scanned corpus faithfully, page by page, with a human author as the oracle | `a private manuscript corpus` (85 pages, 2026-09-21/22) |
 | `research-article-first-draft.md` | the first draft of a research article built from explorations: claims with proofs or evidence, sources read, a checked contribution statement (draft v0) | `v1-fpev-optimal-control-model` (27-page draft, 17 checks, 2026-09-23) |
+| `domain-development/` | making and improving domain shapes: warrant, development, evidence, readiness, improvement, maintenance; value as the four criteria per unit of attention, with a stage map (draft 0.1.5) | developed in the `v1-fpev-domains-dev` project |
+| `teaching-assets-development/` | making, teaching from and releasing course materials: decks with live handwriting, accessible releases, and other course assets; with a stage map (draft 0.1.1) | developed in the `v1-teaching-assets-domain-dev` project |
+| `local-model-installation.md` | choosing, installing, measuring and keeping local AI models on a specific machine, with a short loop for each model change (draft v0.1) | `local-AI` (v1–v3 on two Macs, Apr–Nov 2026) |
+| `youtube-transcripts/` | faithful, recorded transcripts of a video's speech: caption tracks or local speech recognition, with tools for cleanup and for loops and gaps; with a stage map (draft 0.1.1) | developed in the `v1-youtube-transcripts-domain-dev` project |
+| `article-review/` | refereeing manuscripts with AI help, first round to revision: venue policy first, the reviewer's gaps, a claim ledger, few comments that are the reviewer's own; with a stage map (draft 0.1.1) | developed in the `v1-article-review-domain-dev` project |
+| `evaluation-letters/` | evaluating a person for an institution: recommendation letters, promotion reviews, appraisal committees, nominations; the charge sets the standard, the evaluator's judgment is the evaluation; with a stage map (draft 0.1.1) | developed in the `v1-evaluation-letters-domain-dev` project |
+| `student-research-advising/` | advising a student whose research is also done with agents: know what a version was for, trace conclusions to evidence, reveal contradictions, steer without taking over; with a stage map (draft 0.1.1) | developed in the `v1-student-research-advising-domain-dev` project |
+| `research-proposals/` | a research grant's life with agents: the sponsor's rules first, claim status marked, one thesis, short honest reports, the submitted text recorded; with a stage map (draft 0.1.1) | developed in the `v1-research-proposals-domain-dev` project |
+| `theory-model-development/` | developing a mathematical theory or model and its article across versions: proofs before claims, numbers from code, results placed in the literature, framing and authorship the researcher's; with a stage map (draft 0.1.1) | developed in the `v1-theory-model-development-domain-dev` project |
+| `exploration-pieces/` | the exploration piece: the owner's ideas as the frame, prompts verbatim, what was read stated, voices marked, follow-ups appended; with a stage map (draft 0.1.1) | developed in the `v1-exploration-pieces-domain-dev` project |
+| `web-adapter/` | running an FPEV cycle in a web chat with no files: one append-only document, every prompt verbatim, checks after import; bindings compiled for Gemini, Claude and ChatGPT; with a stage map (draft 0.1.0) | developed in the `v2-fpev-web-adapter` project |
+
+## Versions and updates
+
+This registry is the record of what is installed. A domain's source and its archived releases live in its development project, under `deploy/releases/<name>-<version>/`.
+
+| Domain | Version | Requires | Source project | Content hash (first 12) | Installed |
+|---|---|---|---|---|---|
+| `domain-development/` | 0.1.5 | fpev 261010 | `v1-fpev-domains-dev` | `6a5344fab548` | 2026-11-23 |
+| `teaching-assets-development/` | 0.1.1 | fpev 261010 | `v1-teaching-assets-domain-dev` | `cb6b7098095e` | 2026-11-23 |
+| `youtube-transcripts/` | 0.1.1 | fpev 261010 | `v1-youtube-transcripts-domain-dev` | `111b10f1f8ec` | 2026-11-23 |
+| `article-review/` | 0.1.1 | fpev 261010 | `v1-article-review-domain-dev` | `06f9c2b68236` | 2026-11-23 |
+| `evaluation-letters/` | 0.1.1 | fpev 261010 | `v1-evaluation-letters-domain-dev` | `b5dc49794abc` | 2026-11-23 |
+| `student-research-advising/` | 0.1.1 | fpev 261010 | `v1-student-research-advising-domain-dev` | `3f55f8e37f6a` | 2026-11-23 |
+| `research-proposals/` | 0.1.1 | fpev 261010 | `v1-research-proposals-domain-dev` | `0349f132316a` | 2026-11-23 |
+| `theory-model-development/` | 0.1.1 | fpev 261010 | `v1-theory-model-development-domain-dev` | `b9e2d1286711` | 2026-11-23 |
+| `exploration-pieces/` | 0.1.1 | fpev 261010 | `v1-exploration-pieces-domain-dev` | `51f5e4c627cf` | 2026-11-23 |
+| `web-adapter/` | 0.1.0 | fpev 261123 | `v2-fpev-web-adapter` | `0de520343c1c` | 2026-11-24 |
+| `research-article-first-draft.md` | v0.4 | not declared | `v1-fpev-optimal-control-model` | `9d26242a98dd` | single file |
+| `local-model-installation.md` | v0.1 | not declared | `local-AI` | `2759ed8e9446` | single file |
+| `ocr-transcription.md` | v1 | not declared | a private corpus project | `f075e922c2bb` | single file |
+
+Folder hashes are SHA-256 over relative paths and file contents, skipping caches. Single-file hashes are the file's SHA-256.
+
+**To update a domain:** edit its source in the development project; raise `VERSION` and add a `CHANGELOG.md` entry with the case behind the change; run its checker and privacy scan; archive the release; and, on the owner's order, replace the installed copy and update this table. To roll back, install the archived release of the earlier version.
 
 ## Where this lives
 
-In this shape's `domains/` folder. It is the canonical copy.
+This folder holds **deployed copies**. A domain's source lives in its development project: edit it there and redeploy on the owner's order.

@@ -29,7 +29,7 @@ Before the human starts, Execute's closing handoff gives them:
 
 ## In each phase
 
-1. **Record** the human's words, unchanged.
+1. **Record** the human's words, unchanged, in the prompt record and in the phase handoff.
 2. **State back** what they ask before answering, where it is not plain.
 3. **Look first.** Read the files; run a check if they ask for one. Say what you did not check.
 4. **Answer** what was asked.

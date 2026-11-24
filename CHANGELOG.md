@@ -1,5 +1,24 @@
 # Changelog
 
+## 261123.2 — the introduction made reliable
+
+- A line at the top of the README points an agent asked to "introduce" the shape, or summarize its domains, to *New here?*. `package.json` now carries the current version, and `docs/UNDERSTAND.md` says it covers the optional cockpit. *Case:* after 261123.1 was installed, "Introduce ~/.v2-fpev-deliberatory" in Claude Code still described the shape as a TypeScript workbench at version 261010, from `package.json` and `docs/`, and gave no domain count.
+
+## 261123.1 — a short introduction for new users
+
+- **README, *New here?***: how an agent answers plain asks such as "Introduce ~/.v2-fpev-deliberatory" and "Give me a summary of its domains". Facts are read from the files when asked, so they cannot go stale; in particular, domains are counted from the listing of `domains/`. *Case:* the domain count went from three to twelve in one day, and prose counts in the indexes had already gone stale twice. A script for this was built and withdrawn at the owner's word ("I don't like frozen bin's"); the asks are instructions an agent follows.
+
+## 261123 — the record kept complete
+
+Three changes the owner asked for after six weeks of use, each from a case. Compatible: domains that require fpev 261010 remain valid, because nothing they rely on changed.
+
+- **Prompts are recorded automatically** (rule 3). Before acting on a message, the agent appends it, unchanged and numbered, to `references/user-prompts-<person>.md`. *Case:* in several projects prompts lived only in harness session logs, and some were lost. A course's September prompts could not be recovered when a domain was built from it.
+- **Every stage and phase ends in a handoff** (rule 2), written before the next opens; a missed one is written as soon as it is found and marked. *Case:* agents skipped stage handoffs. The new check found five projects of the domain work with no Plan handoff and no prompt record.
+- **Frame phases are explicit.** Discussion and probing before the triptych run as `stage-1-phase-{M}` handoffs, and the triptych consolidates them. *Case:* the domains project ran seven Frame phases before its triptych, and review cycles kept long framing discussions outside the handoff pattern.
+- **`bin/fpev-record-check`** checks a version folder's record before each stage or phase: the prompt record, one handoff per stage and phase, the triptych once Plan has begun, and names and front matter. Its self-test rejects four planted faults.
+- **Domains:** the domains folder now holds nine domain folders with a version registry, synced from the installs made since 261010.
+
+
 ## 261010 — v2: a leaner shape, from practice
 
 What changed from 260810, and why. Each item rests on use of v1 in more than a hundred cycles or on a stated principle; the development record holds the evidence.

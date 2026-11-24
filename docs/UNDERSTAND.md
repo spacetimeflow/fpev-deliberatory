@@ -1,7 +1,7 @@
 # UNDERSTAND — how the deliberatory works
 
-*Read this after the README. It answers: what is this, how does it work, what are the
-conventions, what does it trust.*
+*Read this after the README, which says what the shape is (four stages, six rules, the ritual, the domains). This file explains the
+optional cockpit and its feedback engine: how they work, their conventions, what they trust.*
 
 ## The one-sentence shape
 

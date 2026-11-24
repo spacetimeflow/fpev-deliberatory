@@ -10,6 +10,7 @@ handoffs/stage-{stage-num}-{artifact-or-phase}-{author-id}.md
 
 | Stage type | Pattern |
 |---|---|
+| Frame discussion phases (optional, before the triptych) | `stage-1-phase-{M}-{author}.md` |
 | Artifact-shaped (Frame) | `stage-1-frame-{problem|architecture|gaps}-{author}.md` |
 | Phase-shaped (Plan, Execute, Verify) | `stage-{N}-phase-{M}-{author}.md` |
 | Correction docs (propagate-back) | `v{n}-{stage-name}-correction.md` (lives in next-version's `handoffs/`) |
@@ -19,6 +20,25 @@ Examples (real):
 - `stage-3-phase-4-Qwen3.6-27B-UD-IQ3_XXS.gguf.md`
 - `stage-4-phase-2-wenlong-OpusCC47.md`
 - `v0-framing-correction.md`
+
+## One handoff per stage and per phase
+
+Every stage ends in its handoff, and so does every phase within a stage, including Frame's discussion phases and each Verify phase. Write it before the next stage or phase opens, even when the work was short or ran autonomously. A fresh agent resumes from handoffs alone; a missing one is a gap in the record, not a shortcut.
+
+If a handoff was missed, write it as soon as the gap is found. Say it was written after the fact, and from what. Never leave the gap silent.
+
+`bin/fpev-record-check <version-folder>` reports missing stage handoffs, skipped phase numbers, a missing triptych once Plan has begun, and names or front matter that break the pattern. Run it before opening each stage or phase. It checks form, not quality.
+
+## The prompt record
+
+The human's prompts are the requirements corpus. Record them automatically, without being asked:
+
+- At the start of every turn, before other work, append the human's message unchanged to `references/user-prompts-<person>.md`. Number it, date it, and say which stage or phase it opens or continues.
+- Keep typos and wording. Quote pasted material only as far as it is the human's own; note what else was pasted.
+- Record corrections and rulings as prompts too. They are the most valuable entries.
+- If a session's earlier prompts were not recorded, recover them from the harness's session log, and mark them as recovered.
+
+A later cycle, or a domain built from this one, depends on this file. Session logs belong to a harness and may be lost.
 
 ## Frontmatter (every handoff)
 

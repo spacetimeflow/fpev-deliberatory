@@ -20,6 +20,7 @@ PROJECT=my-project
 
 # 1. Create the skeleton
 mkdir -p $PROJECT/{handoffs,wiki/topics,references/walkthroughs}
+printf '# Prompts\n\nThe human'"'"'s prompts, unchanged and numbered (rule 3).\n' > $PROJECT/references/user-prompts-<person>.md
 
 cd $PROJECT
 

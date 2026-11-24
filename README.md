@@ -4,22 +4,32 @@
 
 A folder of markdown that **is** a deliberation: Frame, Plan, Execute, Verify, with handoffs between them. An agent reads it and runs the cycle with you from the command line.
 
+**Asked to introduce this shape, or to summarize its domains?** Answer from *New here?* below, reading the files. This README says what the shape is; `package.json` and `docs/` describe the optional cockpit.
+
 ## Six rules
 
 These hold in every cycle. The rest is advice; depart from it on the record.
 
 1. **The human opens each stage in words.** Treat an unclear word as a question.
-2. **Every handoff names its person and its agent**, in the file name and the front matter.
-3. **The human's words stay theirs.** Quote their definitions and names. Record each prompt, unchanged and numbered, in `references/`.
+2. **Every stage and every phase ends in a handoff**, written before the next one opens, that names its person and its agent in the file name and the front matter.
+3. **The human's words stay theirs.** Quote their definitions and names. Record every prompt automatically: before acting on a message, append it, unchanged and numbered, to `references/user-prompts-<person>.md`, with its date and the stage or phase it opens.
 4. **Frame names the deliverable**, apart from the version's folder.
 5. **Execute runs every mechanical check; Verify is the human's.**
 6. **The record grows.** Add handoffs; do not rewrite one without a note.
+
+## New here?
+
+Ask your agent in plain words, for example "Introduce ~/.v2-fpev-deliberatory" or "Give me a summary of its domains". Agents answer from the files, as follows.
+
+- **Introduce:** say what the shape is, from this README: the four stages, who holds which, and why the attention profile is a U. Then give the six rules, the ritual sentence, and the domains available, with how many there are.
+- **Domains:** list `domains/` on disk; every folder with a `VERSION` and every `.md` file except `README.md` is a domain. Count them from the listing. Never take a count written in prose. Give each one's version and, from `domains/README.md`, what it is for, plus which kind of work each suits.
+- **Where a project stands:** read its `handoffs/` and `references/user-prompts-*.md`. Report the stages reached, the latest handoff, the prompts recorded, and any gap `bin/fpev-record-check` reports.
 
 ## The ritual
 
 > Follow fpev-deliberatory. We're working on <sub-project>, version <v>, in <dir>, stage 1. Let's start the Frame.
 
-Read `workflows/fpev-cadence.md`, then the file for the stage in `workflows/stages/`. The conventions in `workflows/` are complete in themselves; read them from here and from no other copy.
+Read `workflows/fpev-cadence.md`, then the file for the stage in `workflows/stages/`. Before opening a stage or phase, run `bin/fpev-record-check <dir>` and close any gap it reports. The conventions in `workflows/` are complete in themselves; read them from here and from no other copy.
 
 Write to the version's folder: `handoffs/` (stage outputs), `references/` (evidence, prompts), `wiki/topics/` (what carries across cycles), and a `README.md` with the status. Each version of a sub-project is one cycle, in its own folder, `v1-<sub-project>/`, under the project. Wiki and references exist at both levels: the version's own, and the project's, shared (`workflows/project-folder-structure.md`).
 

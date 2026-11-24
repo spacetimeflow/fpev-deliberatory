@@ -6,6 +6,7 @@ Frame is the slow opening. It establishes what we're solving, what we're buildin
 
 ```
 handoffs/
+├── stage-1-phase-{M}-{author}.md           ← optional: one per discussion phase, before the triptych
 ├── stage-1-frame-problem-{author}.md       ← problem statement
 ├── stage-1-frame-architecture-{author}.md  ← what we're building (sketch)
 └── stage-1-frame-gaps-{author}.md          ← knowledge unknowns
@@ -14,6 +15,17 @@ handoffs/
 Name the deliverable in the problem statement: what the cycle delivers and where it lives, apart from the version's folder. Ask the human if unsure.
 
 Generate decision surfaces (HTML cards) only on request.
+
+## Frame phases: discussion before the triptych
+
+Often the human does not arrive with a frame. They arrive with a question, a hunch or a pile of material, and the frame emerges over several rounds of brainstorming, probing and correction. When that happens, run Frame as **discussion phases**:
+
+- Each round the human opens is a phase, `stage-1-phase-{M}-{author}.md`. It holds the human's words, what was found, the positions the human took, and the open questions.
+- A probe, such as reading a prior project, testing an idea or searching the literature, is a phase too.
+- Do not write the triptych until the human signals that the discussion is done ("now frame", or a gate). The triptych then consolidates the phases, lists them under `reads:`, and carries every position the human took.
+- Short projects can skip the phases and go straight to the triptych.
+
+The phases make the human's thinking part of the record. Without them, the triptych reads as if the agent arrived at the frame alone.
 
 ## Pace and posture
 
